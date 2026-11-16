@@ -27,7 +27,31 @@ Some prompts to answer:
 - How does your `Recommender` compute a score for each song
 - How do you choose which songs to recommend
 
+Our design would be a little less complicated compared to how real-world recommendations work. Our music recommender will focus mainly on songs that match the user's favorite mood and energy level. It will also focus on the genre and acoustic levels of the music, but those are the main focus. As for how the scoring process works, when a song's mood or even genre matches the user's preferences, we give points to it. Also, when a song's energy is close to the user's chosen energy level, it will provide a higher score. So, with this scoring process, our system sorts the songs, gathers the ones with the highest scores, and recommends them to users. 
+
 You can include a simple diagram or bullet list if helpful.
+
+=============================================================================
+                          RECOMMENDER DATA FLOW MAP
+=============================================================================
+
+  [ INPUT ] --------> [ PROCESS (THE LOOP) ] --------> [ OUTPUT ]
+  • User Profile        For every track in CSV:         • Sort by Total Score
+  • songs.csv           1. Check Genre  (+4.0)          • Slice Top K Songs
+                        2. Check Mood   (+2.0)          • Display Recommendations
+                        3. Calc Energy  (0.0 - 1.5)
+                        4. Check Acousticness (+1.75)
+                        5. Sum Points
+=============================================================================
+
+### Potential Biases
+
+- Genre has the most points, so exact genre matches may dominate the results.
+- Different genre labels may cause similar songs to be treated as unrelated.
+- Common genres may be recommended more often than less-represented genres.
+- A narrow user profile may limit variety in the recommendations.
+- The small dataset may not represent all types of music.
+
 
 ---
 
