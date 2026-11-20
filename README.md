@@ -29,6 +29,9 @@ Some prompts to answer:
 
 Our design would be a little less complicated compared to how real-world recommendations work. Our music recommender will focus mainly on songs that match the user's favorite mood and energy level. It will also focus on the genre and acoustic levels of the music, but those are the main focus. As for how the scoring process works, when a song's mood or even genre matches the user's preferences, we give points to it. Also, when a song's energy is close to the user's chosen energy level, it will provide a higher score. So, with this scoring process, our system sorts the songs, gathers the ones with the highest scores, and recommends them to users. 
 
+Real-world music recommenders, such as Spotify or YouTube, use information such as genre, mood, tempo, listening history, likes, skips, and how similar users listen to music. They combine these inputs to rank songs and predict what a user is most likely to enjoy. This project uses a simpler rule-based system that matches genre and mood and compares energy levels.
+
+
 You can include a simple diagram or bullet list if helpful.
 
 =============================================================================
@@ -103,6 +106,11 @@ Paste a sample of your recommender's output here as a text block so a reader can
 #   3. ...
 ```
 
+### Top Recommendations Before Weight Change
+
+In this example, genre received 4.0 points and energy could receive up to 1.5 points.
+
+```text
 Top recommendations:
 
 1. Sunrise City
@@ -133,75 +141,76 @@ Top recommendations:
    Score: 1.48
    Reasons:
    - energy similarity (+1.48)
+```
 
 ### Adversarial Profile Results
 
-The following output comes from running each profile against `recommend_songs` with `k=5`.
+The following output shows the results after the weight change. Genre now receives 2.0 points, mood receives 2.0 points, and energy can receive up to 3.0 points. Each profile was run against `recommend_songs` with `k=5`.
 
 #### Conflicting Preferences
 
 ```text
 Profile: {'genre': 'pop', 'mood': 'sad', 'energy': 0.9}
-1. Gym Hero - 5.46 (genre match (+4.0); energy similarity (+1.46))
-2. Sunrise City - 5.38 (genre match (+4.0); energy similarity (+1.38))
-3. Storm Runner - 1.48 (energy similarity (+1.48))
-4. How You Like That - 1.48 (energy similarity (+1.48))
-5. Golden - 1.47 (energy similarity (+1.47))
+1. Gym Hero - 4.91 (genre match (+2.0); energy similarity (+2.91))
+2. Sunrise City - 4.76 (genre match (+2.0); energy similarity (+2.76))
+3. Storm Runner - 2.97 (energy similarity (+2.97))
+4. How You Like That - 2.97 (energy similarity (+2.97))
+5. Golden - 2.94 (energy similarity (+2.94))
 ```
 
 #### Low-Energy Intense
 
 ```text
 Profile: {'genre': 'rock', 'mood': 'intense', 'energy': 0.1}
-1. Storm Runner - 6.29 (genre match (+4.0); mood match (+2.0); energy similarity (+0.28))
-2. Gym Hero - 2.25 (mood match (+2.0); energy similarity (+0.25))
-3. Spacewalk Thoughts - 1.23 (energy similarity (+1.23))
-4. Library Rain - 1.12 (energy similarity (+1.12))
-5. Coffee Shop Stories - 1.09 (energy similarity (+1.09))
+1. Storm Runner - 4.57 (genre match (+2.0); mood match (+2.0); energy similarity (+0.57))
+2. Gym Hero - 2.51 (mood match (+2.0); energy similarity (+0.51))
+3. Spacewalk Thoughts - 2.46 (energy similarity (+2.46))
+4. Library Rain - 2.25 (energy similarity (+2.25))
+5. Coffee Shop Stories - 2.19 (energy similarity (+2.19))
 ```
 
 #### High-Energy Chill
 
 ```text
 Profile: {'genre': 'lofi', 'mood': 'chill', 'energy': 1.0}
-1. Midnight Coding - 6.63 (genre match (+4.0); mood match (+2.0); energy similarity (+0.63))
-2. Library Rain - 6.53 (genre match (+4.0); mood match (+2.0); energy similarity (+0.52))
-3. Focus Flow - 4.60 (genre match (+4.0); energy similarity (+0.60))
-4. Spacewalk Thoughts - 2.42 (mood match (+2.0); energy similarity (+0.42))
-5. Gym Hero - 1.40 (energy similarity (+1.40))
+1. Midnight Coding - 5.26 (genre match (+2.0); mood match (+2.0); energy similarity (+1.26))
+2. Library Rain - 5.05 (genre match (+2.0); mood match (+2.0); energy similarity (+1.05))
+3. Focus Flow - 3.20 (genre match (+2.0); energy similarity (+1.20))
+4. Spacewalk Thoughts - 2.84 (mood match (+2.0); energy similarity (+0.84))
+5. Gym Hero - 2.79 (energy similarity (+2.79))
 ```
 
 #### Unknown Genre
 
 ```text
 Profile: {'genre': 'classical', 'mood': 'happy', 'energy': 0.5}
-1. Rooftop Lights - 3.11 (mood match (+2.0); energy similarity (+1.11))
-2. Sunrise City - 3.02 (mood match (+2.0); energy similarity (+1.02))
-3. Midnight Coding - 1.38 (energy similarity (+1.38))
-4. Focus Flow - 1.35 (energy similarity (+1.35))
-5. Calm Down - 1.32 (energy similarity (+1.32))
+1. Rooftop Lights - 4.22 (mood match (+2.0); energy similarity (+2.22))
+2. Sunrise City - 4.04 (mood match (+2.0); energy similarity (+2.04))
+3. Midnight Coding - 2.76 (energy similarity (+2.76))
+4. Focus Flow - 2.70 (energy similarity (+2.70))
+5. Calm Down - 2.64 (energy similarity (+2.64))
 ```
 
 #### Unknown Mood
 
 ```text
 Profile: {'genre': 'pop', 'mood': 'melancholic', 'energy': 0.8}
-1. Sunrise City - 5.47 (genre match (+4.0); energy similarity (+1.47))
-2. Gym Hero - 5.30 (genre match (+4.0); energy similarity (+1.30))
-3. Training Season - 1.48 (energy similarity (+1.48))
-4. Despacito - 1.48 (energy similarity (+1.48))
-5. Espresso - 1.47 (energy similarity (+1.47))
+1. Sunrise City - 4.94 (genre match (+2.0); energy similarity (+2.94))
+2. Gym Hero - 4.61 (genre match (+2.0); energy similarity (+2.61))
+3. Training Season - 2.97 (energy similarity (+2.97))
+4. Despacito - 2.97 (energy similarity (+2.97))
+5. Espresso - 2.94 (energy similarity (+2.94))
 ```
 
 #### Neutral Profile
 
 ```text
 Profile: {'genre': '', 'mood': '', 'energy': 0.5}
-1. Midnight Coding - 1.38 (energy similarity (+1.38))
-2. Focus Flow - 1.35 (energy similarity (+1.35))
-3. Calm Down - 1.32 (energy similarity (+1.32))
-4. Coffee Shop Stories - 1.30 (energy similarity (+1.30))
-5. The Door - 1.29 (energy similarity (+1.29))
+1. Midnight Coding - 2.76 (energy similarity (+2.76))
+2. Focus Flow - 2.70 (energy similarity (+2.70))
+3. Calm Down - 2.64 (energy similarity (+2.64))
+4. Coffee Shop Stories - 2.61 (energy similarity (+2.61))
+5. The Door - 2.58 (energy similarity (+2.58))
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
